@@ -1,73 +1,44 @@
 // CMPM 121 Smelly Code Activity
-
-// This variable keeps track of the counter
-let c = 0;
-
-// These constants are for button IDs and heading text
-const a = "increment", b = "counter", h = "CMPM 121 Project";
-
-function setup() {
-  // Create the HTML for the counter
-  document.body.innerHTML = `
-    <h1>${h}</h1>
-    <p>Counter: <span id="${b}">0</span></p>
-    <button id="${a}">Click Me!</button>
-    <button id="dec">Decrement</button>
+document.body.innerHTML = `
+    <h1>"CMPM 121 Project"</h1>
+    <p>Counter: <span id="counter">0</span></p>
+    <button id="increment">Click Me!</button>
+    <button id="decrement">Decrement</button>
     <button id="reset">Reset</button>
   `;
 
-  // Get the increment button element from the document
-  const bI = document.getElementById(a);
-  // Get the decrement button element from the document
-  const bD = document.getElementById("dec");
-  // Get the reset button element from the document
-  const bR = document.getElementById("reset");
-  // Get the counter span element from the document
-  const ctr = document.getElementById(b);
+// Get button elements from document
+const incrementButton = document.getElementById("increment");
+const decrementButton = document.getElementById("decrement");
+const resetButton = document.getElementById("reset");
+const counterButton = document.getElementById("counter");
+let count = 0;
 
-  // Check if any element is missing, then exit the function
-  if (!bI || !bD || !bR || !ctr) return;
-
-  // Add click event to the increment button
-  bI.addEventListener("click", () => {
-    // Increase the counter by 1
-    c++;
-    // Update the counter display
-    ctr.innerHTML = `${c}`;
-    // Update the document title
-    document.title = "Clicked " + c;
-    // Change the background color based on even/odd count
-    document.body.style.backgroundColor = c % 2 ? "pink" : "lightblue";
-  });
-
-  // Add click event to the decrement button
-  bD.addEventListener("click", () => {
-    // Decrease the counter by 1
-    c--;
-    // Update the counter display
-    ctr.innerHTML = `${c}`;
-    // Update the document title
-    document.title = "Clicked " + c;
-    // Change the background color based on even/odd count
-    document.body.style.backgroundColor = c % 2 ? "pink" : "lightblue";
-  });
-
-  // Add click event to the reset button
-  bR.addEventListener("click", () => {
-    // Reset the counter to 0
-    c = 0;
-    // Update the counter display
-    ctr.innerHTML = `${c}`;
-    // Update the document title
-    document.title = "Clicked " + c;
-    // Change the background color based on even/odd count
-    document.body.style.backgroundColor = c % 2 ? "pink" : "lightblue";
-  });
+// updateCounter() function to mitigate duplicated code via Extract Function
+function updateCounter(): void {
+  counterButton!.innerHTML! = `${count}`;
+  document.title = "Clicked " + count;
+  document.body.style.backgroundColor = calculateBackgroundColor();
 }
 
-function start() {
-  // Call setup to initialize the UI
-  setup();
+function calculateBackgroundColor(): string {
+  return count % 2 ? "pink" : "lightblue";
 }
-// Start the counter app
-start();
+
+// Add click event to the increment button
+incrementButton!.addEventListener("click", () => {
+  count++;
+  updateCounter();
+});
+
+// Add click event to the decrement button
+decrementButton!.addEventListener("click", () => {
+  count--;
+  updateCounter();
+});
+
+// Add click event to the reset button
+resetButton!.addEventListener("click", () => {
+  count = 0;
+  updateCounter();
+});
